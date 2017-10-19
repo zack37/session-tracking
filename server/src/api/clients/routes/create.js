@@ -1,7 +1,6 @@
 import { insert, withConnection } from '../client-manager';
 
 import { CREATED } from 'http-status-codes';
-import joi from 'joi';
 import { mutableFieldsStrict } from '../client-schema';
 
 export default {

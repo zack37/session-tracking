@@ -4,7 +4,7 @@ export default {
   method: 'POST',
   path: '/clients/{id}/sessions',
   handler: async (req, reply) => {
-    const response = await withConnection(async db => {
+    await withConnection(async db => {
       return await insert(db, req.params.id, req.payload);
     });
 

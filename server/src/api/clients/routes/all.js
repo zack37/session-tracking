@@ -1,6 +1,5 @@
 import { count, query, withConnection } from '../client-manager';
 
-import boom from 'boom';
 import envelopeSchema from '../../../schemas/envelope-schema';
 import joi from 'joi';
 import { response as responseSchema } from '../client-schema';
