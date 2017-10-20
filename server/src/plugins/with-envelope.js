@@ -25,10 +25,11 @@ function getPrevLink(queryParams, href) {
 
 const plugin = {
   register: (server, options, next) => {
-    server.decorate('reply', 'withEnvelope', async function(
-      response,
+    server.decorate('reply', 'withEnvelope', async function withEnvelope(
+      response = {},
       options = {}
     ) {
+      response = response || {};
       if (response.isBoom || response instanceof Error) {
         return this.response(response);
       }

@@ -1,0 +1,31 @@
+.sidebar {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 20px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-right: 1px solid #eee;
+}
+
+.sidebar .nav-item {
+  width: 100%;
+  text-align: center;
+}
+
+.sidebar .nav-link {
+  border-radius: 0;
+}
+
+.client-select:hover {
+  cursor: pointer;
+  /* color: white; */
+  background-color: #ddd;
+}
+
+.client-select.active {
+  color: white;
+  background-color: #007bff;
+}

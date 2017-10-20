@@ -1,19 +1,16 @@
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import 'rxjs';
+
+import { Route, HashRouter as Router, Switch } from 'react-router-dom';
 
 import App from './app/AppComponent';
+import DashboardContainer from './dashboard/DashboardContainer';
 import React from 'react';
-
-// import Container from './container/???';
-
-const Container = () => {
-  return <div>Container</div>;
-};
 
 const routes = () => (
   <Router>
     <App>
       <Switch>
-        <Route exact path="/" component={Container} />
+        <Route exact path="/" component={DashboardContainer} />
       </Switch>
     </App>
   </Router>

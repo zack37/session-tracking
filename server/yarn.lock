@@ -2585,6 +2585,13 @@ jmespath@0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
 
+joi-date-extensions@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/joi-date-extensions/-/joi-date-extensions-1.1.0.tgz#3d75c201b3e7ff1dd0de8e049231eae35cd9c319"
+  dependencies:
+    hoek "4.x.x"
+    moment "2.x.x"
+
 joi@10.x.x:
   version "10.6.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-10.6.0.tgz#52587f02d52b8b75cdb0c74f0b164a191a0e1fc2"

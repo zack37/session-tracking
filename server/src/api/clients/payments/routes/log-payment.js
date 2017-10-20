@@ -1,10 +1,10 @@
-import { insert, withConnection } from '../session-manager';
+import { insert, withConnection } from '../payments-manager';
 
-import { mutableFieldsStrict } from '../session-schema';
+import { mutableFieldsStrict } from '../payments-schema';
 
 export default {
   method: 'POST',
-  path: '/clients/{id}/sessions',
+  path: '/clients/{id}/payments',
   config: {
     validate: {
       payload: mutableFieldsStrict

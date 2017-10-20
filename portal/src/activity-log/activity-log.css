@@ -1,0 +1,5 @@
+.table thead.thead-dark th {
+  color: white;
+  background-color: #343a40;
+  border-color: #32383e;
+}

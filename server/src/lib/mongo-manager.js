@@ -43,9 +43,13 @@ async function insert(db, data) {
   return model;
 }
 
+async function update(db, id, data) {
+  return await db.updateOne({ _id: id }, { $set: data });
+}
+
 /**
  * Executes `fn` with a mongo connection
- * 
+ *
  * @param {Function} fn function to execute within the context of a mongo connection
  * @returns {Promise} The result of `fn` after closing the mongodb connection
  */
@@ -63,5 +67,6 @@ export default {
   query,
   byId,
   insert,
+  update,
   withConnection: curry(withConnection, 2),
 };

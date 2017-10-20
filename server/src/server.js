@@ -12,6 +12,7 @@ const server = new Server({
       stripTrailingSlash: true,
     },
     routes: {
+      cors: true,
       validate: {
         options: {
           abortEarly: false,
@@ -22,9 +23,9 @@ const server = new Server({
 });
 
 server.connection({
-  port: 3000,
+  port: process.env.PORT || 3000,
   labels: ['session-tracking'],
-  host: 'localhost',
+  host: 'dev.vivintsolar.com',
 });
 
 async function bootstrap() {
