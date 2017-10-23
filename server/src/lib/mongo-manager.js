@@ -44,7 +44,7 @@ async function insert(db, data) {
 }
 
 async function update(db, id, data) {
-  return await db.updateOne({ _id: id }, { $set: data });
+  return await db.update({ _id: id }, data);
 }
 
 /**

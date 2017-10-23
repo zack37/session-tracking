@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { getClients, selectClient } from '../actions/clients';
 
 import ClientListComponent from './ClientListComponent';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import fuzzysearch from 'fuzzysearch';
+import { getPayments } from '../actions/payments';
+import { getSessions } from '../actions/sessions';
 
 class ClientListContainer extends Component {
   constructor(props) {
@@ -11,6 +15,16 @@ class ClientListContainer extends Component {
     this.state = {
       searchTerm: '',
     };
+  }
+
+  componentDidMount() {
+    this.props.dispatch(getClients());
+  }
+
+  onClientClicked = (client) => {
+    this.props.dispatch(selectClient(client));
+    this.props.dispatch(getSessions(client._id));
+    this.props.dispatch(getPayments(client._id));
   }
 
   handleSearch = text => {
@@ -31,7 +45,7 @@ class ClientListContainer extends Component {
         clients={filteredClients}
         selectedClient={this.props.selectedClient}
         onSearch={this.handleSearch}
-        onClientClicked={this.props.onClientClicked}
+        onClientClicked={this.onClientClicked}
       />
     );
   }
@@ -43,4 +57,9 @@ ClientListContainer.propTypes = {
   onClientClicked: PropTypes.func.isRequired,
 };
 
-export default ClientListContainer;
+const mapStateToProps = state => ({
+  clients: state.clients.clients,
+  selectedClient: state.clients.selectedClient,
+});
+
+export default connect(mapStateToProps)(ClientListContainer);

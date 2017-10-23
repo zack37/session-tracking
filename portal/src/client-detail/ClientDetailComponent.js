@@ -9,29 +9,34 @@ function between(num, lower, upper) {
   return num >= lower && num <= upper;
 }
 
-const ClientDetailComponent = ({ client }) => {
-    const balanceClasses = classnames('display-3', {
-      'text-success': client.balance > 30,
-      'text-warning': between(client.balance, -30, 30),
-      'text-danger': client.balance < -30,
-    });
+function renderClient({ name, balance }) {
+  const balanceClasses = classnames({
+    'display-4': true,
+    'text-success': balance > 30,
+    'text-warning': between(balance, -30, 30),
+    'text-danger': balance < -30,
+  });
 
-    return (
-      <main className="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
-        <h1>Details</h1>
-        <div className="row">
-          <div className="col-md-8">
-            <span className="display-3">{client.name}</span>
-          </div>
-          <div className="col-md-4">
-            <span className={balanceClasses}>${client.balance}</span>
-          </div>
-        </div>
-        <div className="row">
+  return (
+    <div className="col-sm-12 text-center">
+      <div className="col-sm-12 display-3">{name}</div>
+      <div className="col-sm-12">
+        <span className={balanceClasses}>${balance}</span>
+      </div>
+    </div>
+  );
+}
+
+const ClientDetailComponent = ({ client }) => {
+  return (
+    <main className="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+      <div className="row p-4">{renderClient(client)}</div>
+
+      <div className="row">
         <ActivityLogContainer client={client} />
-        </div>
-      </main>
-    );
+      </div>
+    </main>
+  );
 };
 
 ClientDetailComponent.propTypes = {

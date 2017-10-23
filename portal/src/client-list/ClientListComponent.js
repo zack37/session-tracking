@@ -13,7 +13,7 @@ const createClientListItem = (onClientClicked, selectedClient) => client => (
     })}
     onClick={() => onClientClicked(client)}
   >
-    <span className="nav-link">{client.name}</span>
+    <h4 className="nav-link pt-3">{client.name}</h4>
   </li>
 );
 
@@ -23,11 +23,17 @@ const ClientListComponent = ({
   onClientClicked,
   onSearch,
 }) => {
-  const clientListItems = clients.map(createClientListItem(onClientClicked, selectedClient));
+  const clientListItems = clients.map(
+    createClientListItem(onClientClicked, selectedClient)
+  );
 
   return (
     <nav className="col-sm-3 col-md-2 d-sm-block bg-light sidebar">
       <div className="mt-2 mb-2 mt-md-0">
+        <button id="add-client-button" className="btn btn-success d-block mx-auto px-3" disabled>
+          Add Client
+        </button>
+        <br />
         <input
           className="form-control mr-sm-2"
           placeholder="Search..."

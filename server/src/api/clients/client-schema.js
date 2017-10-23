@@ -9,11 +9,9 @@ export const mutableFields = joi.object().keys({
     .default(0),
 });
 
-export const mutableFieldsStrict = mutableFields.requiredKeys(
-  'name',
-  'balance'
-);
+export const mutableFieldsStrict = mutableFields
+  .requiredKeys('name');
 
-export const response = mutableFieldsStrict.keys({
+export const response = mutableFields.keys({
   _id: idSchema.required(),
 });

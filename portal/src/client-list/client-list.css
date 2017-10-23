@@ -29,3 +29,11 @@
   color: white;
   background-color: #007bff;
 }
+
+#add-client-button {
+  cursor: pointer;
+}
+
+#add-client-button:disabled {
+  cursor: not-allowed;
+}

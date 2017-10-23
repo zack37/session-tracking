@@ -13,12 +13,13 @@ export default {
         id: idSchema,
       },
     },
-    response: {
-      schema: envelopeSchema(responseSchema),
-    },
+    // response: {
+    //   schema: envelopeSchema(responseSchema),
+    // },
   },
   handler: async (req, reply) => {
     const id = req.params.id;
+
     const response =  await withConnection(async db => {
       return await byId(db, id);
     });

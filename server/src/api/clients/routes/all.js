@@ -28,6 +28,7 @@ export default {
   },
   handler: async (req, reply) => {
     const queryParams = req.query;
+
     const { documentCount, response } = await withConnection(async db => {
       const documentCount = await count(db, queryParams);
       const response = await query(db, queryParams);
