@@ -32,6 +32,6 @@ export default {
       return await paymentCreate(db, response._id);
     });
 
-    reply(response).code(CREATED);
+    reply.withEnvelope(response);
   },
 };

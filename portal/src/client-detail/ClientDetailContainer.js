@@ -6,6 +6,10 @@ import { connect } from 'react-redux';
 
 class ClientDetailContainer extends Component {
   render() {
+    if(this.props.client) {
+      document.title = `Session Tracker - ${this.props.client.name}`;
+    }
+
     return (
       this.props.client && <ClientDetailComponent client={this.props.client} />
     );
@@ -13,7 +17,7 @@ class ClientDetailContainer extends Component {
 }
 
 ClientDetailContainer.propTypes = {
-  client: PropTypes.object.isRequired,
+  client: PropTypes.object,
 };
 
 const mapStateToProps = state => {

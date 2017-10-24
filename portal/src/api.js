@@ -10,8 +10,7 @@ const createApi = host => {
     get(path) {
       return Observable.defer(() =>
         axios.get(`${host}${path}`).then(extract)
-      )
-      .catch(err => {
+      ).catch(err => {
         console.error(err);
 
         throw err;
@@ -19,9 +18,9 @@ const createApi = host => {
     },
 
     post(path, obj) {
-      return Observable.defer(() => {
-        axios.post(`${host}${path}`, obj).then(extract);
-      });
+      return Observable.defer(() =>
+        axios.post(`${host}${path}`, obj).then(extract)
+      );
     },
   };
 };

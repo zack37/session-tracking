@@ -1,4 +1,5 @@
 import {
+  ADD_CLIENT,
   CLIENTS_REQUEST,
   CLIENTS_RESPONSE,
   CLIENT_ADDED,
@@ -8,23 +9,30 @@ import {
 const defaultState = {
   clients: [],
   isLoading: false,
-  selectedClient: null
+  isAdding: false,
+  selectedClient: null,
 };
 
-function clients(state = defaultState, action) {
-  switch (action.type) {
+function clients(state = defaultState, { type, payload }) {
+  switch (type) {
+    case ADD_CLIENT:
+      return { ...state, isAdding: true, selectedClient: null };
     case CLIENT_ADDED:
-      return { ...state, clients: [...state.clients, action.payload] };
+      return {
+        ...state,
+        isAdding: false,
+        clients: [...state.clients, payload],
+      };
     case CLIENTS_REQUEST:
       return { ...state, isLoading: true };
     case CLIENTS_RESPONSE:
       return {
         ...state,
         isLoading: false,
-        clients: action.payload,
+        clients: payload,
       };
     case CLIENT_SELECTED:
-      return { ...state, selectedClient: action.payload };
+      return { ...state, isAdding: false, selectedClient: payload };
     default:
       return state;
   }

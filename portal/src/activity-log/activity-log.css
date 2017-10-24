@@ -4,6 +4,10 @@
   border-color: #32383e;
 }
 
+.table {
+  max-height: 50%;
+}
+
 .loading {
   width: 150px;
 }

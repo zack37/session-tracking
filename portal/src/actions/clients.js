@@ -21,11 +21,6 @@ const receiveClients = () => clients => ({
   payload: clients,
 });
 
-const addClientAction = client => ({
-  type: ADD_CLIENT,
-  payload: client,
-});
-
 const clientAdded = () => client => ({
   type: CLIENT_ADDED,
   payload: client,
@@ -39,20 +34,19 @@ const fetchClients = () => dispatch => {
     .subscribe(dispatch);
 };
 
-const createClient = client => dispatch => {
-  dispatch(addClientAction(client));
-  return api
-    .post('/clients')
-    .mapTo(clientAdded())
-    .subscribe(dispatch);
-};
-
 export const getClients = () => dispatch => {
   return dispatch(fetchClients());
 };
 
-export const addClient = client => dispatch => {
-  return dispatch(createClient(client));
+export const addClient = () => ({
+  type: ADD_CLIENT,
+});
+
+export const createClient = client => dispatch => {
+  return api
+    .post('/clients', client)
+    .map(clientAdded())
+    .subscribe(dispatch);
 };
 
 export const selectClient = client => ({

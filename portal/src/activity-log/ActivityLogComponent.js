@@ -2,6 +2,7 @@ import './activity-log.css';
 
 import { map, sortBy } from 'ramda';
 
+import AddPaymentContainer from '../add-payment/AddPaymentContainer';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Spinner from 'react-spinkit';
@@ -37,7 +38,7 @@ const createTable = activity => {
   }, activity);
 
   return (
-    <table className="table table-bordered table-responsive">
+    <table className="table table-bordered table-responsive-lg">
       <thead className="thead-dark">
         <tr>
           <th scope="col">Type</th>
@@ -52,7 +53,7 @@ const createTable = activity => {
 
 const renderNoActivity = () => {
   return (
-    <span className="display-4 text-muted d-block text-center">
+    <span className="display-4 text-muted d-block mx-auto text-center">
       No Activity
     </span>
   );
@@ -64,26 +65,54 @@ const renderLoading = () => {
       name="ball-beat"
       fadeIn="none"
       color="#343a40"
-      className="d-flex mx-auto loading"
+      className="d-flex mx-auto pl-5 loading"
     />
   );
 };
 
-const ActivityLogComponent = ({ sessions, payments, isLoading }) => {
+const ActivityLogComponent = ({
+  sessions,
+  payments,
+  isLoading,
+  onAddPaymentClicked,
+  isAddingPayment,
+}) => {
   const activity = combineActivity(sessions, payments);
-  const hasActivity = activity.length > 0;
+  const hasActivity = !!activity.length;
 
-  const elementToRender = isLoading
-    ? renderLoading()
-    : hasActivity ? createTable(activity) : renderNoActivity();
+  function elementToRender() {
+    if (isLoading) {
+      return renderLoading();
+    }
 
-  return <div className="col-md-12">{elementToRender}</div>;
+    if (hasActivity) {
+      return createTable(activity);
+    }
+
+    return renderNoActivity();
+  }
+
+  return (
+    <div className="col-md-10 mx-auto">
+      {elementToRender()}
+      <div className="col-md-12 mx-auto text-center">
+        {!isAddingPayment && (
+          <button className="btn btn-primary" onClick={onAddPaymentClicked}>
+            Add Payment
+          </button>
+        )}
+        {isAddingPayment && <AddPaymentContainer />}
+      </div>
+    </div>
+  );
 };
 
 ActivityLogComponent.propTypes = {
   sessions: PropTypes.array.isRequired,
   payments: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isAddingPayment: PropTypes.bool.isRequired,
+  onAddPaymentClicked: PropTypes.func.isRequired,
 };
 
 export default ActivityLogComponent;

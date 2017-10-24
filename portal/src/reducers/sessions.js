@@ -2,6 +2,7 @@ import { SESSIONS_REQUEST, SESSIONS_RESPONSE } from '../actions/sessions';
 
 const defaultState = {
   isLoading: false,
+  isAdding: false,
   sessionsByClient: {},
 };
 

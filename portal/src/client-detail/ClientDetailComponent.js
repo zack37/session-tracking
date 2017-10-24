@@ -29,13 +29,13 @@ function renderClient({ name, balance }) {
 
 const ClientDetailComponent = ({ client }) => {
   return (
-    <main className="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+    <div>
       <div className="row p-4">{renderClient(client)}</div>
 
       <div className="row">
         <ActivityLogContainer client={client} />
       </div>
-    </main>
+    </div>
   );
 };
 
