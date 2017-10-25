@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { addPayment, cancelPayment, createPayment } from '../actions/payments';
+import { cancelPayment, createPayment } from '../actions/payments';
 
 import AddPaymentComponent from './AddPaymentComponent';
-import PropTypes from 'prop-types';
 import { addBalance } from '../actions/clients';
 import { connect } from 'react-redux';
 import moment from 'moment';

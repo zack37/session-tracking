@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { addSession, cancelSession, createSession } from '../actions/sessions';
+import { cancelSession, createSession } from '../actions/sessions';
 
 import AddSessionComponent from './AddSessionComponent';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { subtractBalance } from '../actions/clients';
