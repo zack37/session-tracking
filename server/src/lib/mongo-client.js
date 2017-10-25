@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 import bluebird from 'bluebird';
 import createLogger from '../logger';
 
-const mongoUri = 'mongodb://localhost:27017/session-tracker';
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/session-tracker';
 const logger = createLogger('mongo-client');
 
 export default () => {
