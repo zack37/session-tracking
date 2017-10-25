@@ -16,7 +16,7 @@ const createClientListItem = (onClientClicked, selectedClient) => client => (
     })}
     onClick={() => onClientClicked(client)}
   >
-    <h4 className="nav-link pt-3">{client.name}</h4>
+    <span className="nav-link pt-1">{client.name}</span>
   </li>
 );
 
@@ -50,7 +50,7 @@ const ClientListComponent = ({
   return (
     <nav
       className="col-sm-3 col-md-2 d-sm-block bg-light sidebar"
-      style={{ height: `${0.95 * window.innerHeight}px` }}
+      style={{ height: `${window.innerHeight-60}px` }}
     >
       <div className="mt-2 mb-2 mt-md-0">
         <button

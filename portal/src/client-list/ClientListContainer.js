@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { addClient, getClients, selectClient } from '../actions/clients';
 import { cancelPayment, getPayments } from '../actions/payments';
+import { cancelSession, getSessions } from '../actions/sessions';
 
 import ClientListComponent from './ClientListComponent';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fuzzysearch from 'fuzzysearch';
-import { getSessions } from '../actions/sessions';
 
 class ClientListContainer extends Component {
   constructor(props) {
@@ -21,23 +21,24 @@ class ClientListContainer extends Component {
     this.props.dispatch(getClients());
   }
 
-  handleClientClicked = (client) => {
+  handleClientClicked = client => {
     this.props.dispatch(selectClient(client));
     this.props.dispatch(getSessions(client._id));
     this.props.dispatch(getPayments(client._id));
 
     // cancel open forms
     this.props.dispatch(cancelPayment());
-  }
+    this.props.dispatch(cancelSession());
+  };
 
   handleAddClientClicked = () => {
     this.props.dispatch(addClient());
     this.props.dispatch(cancelPayment());
-  }
+  };
 
   handleSearch = text => {
     this.setState({
-      searchTerm: text.toLowerCase()
+      searchTerm: text.toLowerCase(),
     });
   };
 

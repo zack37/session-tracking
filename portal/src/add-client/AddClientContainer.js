@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { cancelAddClient, createClient } from '../actions/clients';
 
 import AddClientComponent from './AddClientComponent';
 import { connect } from 'react-redux';
-import { createClient } from '../actions/clients';
 
 class AddClientContainer extends Component {
   constructor(props) {
@@ -19,6 +19,10 @@ class AddClientContainer extends Component {
     });
   };
 
+  handleCancelClicked = () => {
+    this.props.dispatch(cancelAddClient());
+  }
+
   handleFormSubmit = e => {
     e.preventDefault();
 
@@ -33,8 +37,9 @@ class AddClientContainer extends Component {
     return (
       <AddClientComponent
         clientName={this.state.clientName}
-        handleClientNameChange={this.handleClientNameChange}
-        handleFormSubmit={this.handleFormSubmit}
+        onClientNameChanged={this.handleClientNameChange}
+        onFormSubmitted={this.handleFormSubmit}
+        onCancelClicked={this.handleCancelClicked}
       />
     );
   }

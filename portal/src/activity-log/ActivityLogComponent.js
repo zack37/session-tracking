@@ -3,6 +3,7 @@ import './activity-log.css';
 import { map, sortBy } from 'ramda';
 
 import AddPaymentContainer from '../add-payment/AddPaymentContainer';
+import AddSessionContainer from '../add-session/AddSessionContainer';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Spinner from 'react-spinkit';
@@ -31,23 +32,25 @@ const createTable = activity => {
     return (
       <tr key={key} className={rowClass}>
         <td>{startCase(type)}</td>
-        <td>{moment(date).format('MMM DD, YYYY HH:mm A')}</td>
+        <td>{moment(date).format('MMMM DD, YYYY')}</td>
         <td>${amount}</td>
       </tr>
     );
   }, activity);
 
   return (
-    <table className="table table-bordered table-responsive-lg">
-      <thead className="thead-dark">
-        <tr>
-          <th scope="col">Type</th>
-          <th scope="col">Date</th>
-          <th scope="col">Amount</th>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>
+    <div className="table-container">
+      <table className="table table-bordered table-responsive-lg">
+        <thead className="thead-dark">
+          <tr>
+            <th scope="col">Type</th>
+            <th scope="col">Date</th>
+            <th scope="col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </table>
+    </div>
   );
 };
 
@@ -76,11 +79,13 @@ const ActivityLogComponent = ({
   isLoading,
   onAddPaymentClicked,
   isAddingPayment,
+  isAddingSession,
+  onAddSessionClicked,
 }) => {
   const activity = combineActivity(sessions, payments);
   const hasActivity = !!activity.length;
 
-  function elementToRender() {
+  function detailsToRender() {
     if (isLoading) {
       return renderLoading();
     }
@@ -92,16 +97,29 @@ const ActivityLogComponent = ({
     return renderNoActivity();
   }
 
+  function formToRender() {
+    if (isAddingPayment) {
+      return <AddPaymentContainer />;
+    } else if (isAddingSession) {
+      return <AddSessionContainer />;
+    }
+    return (
+      <div>
+        <button className="btn btn-primary mx-3" onClick={onAddPaymentClicked}>
+          Add Payment
+        </button>
+        <button className="btn btn-primary mx-3" onClick={onAddSessionClicked}>
+          Add Session
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="col-md-10 mx-auto">
-      {elementToRender()}
-      <div className="col-md-12 mx-auto text-center">
-        {!isAddingPayment && (
-          <button className="btn btn-primary" onClick={onAddPaymentClicked}>
-            Add Payment
-          </button>
-        )}
-        {isAddingPayment && <AddPaymentContainer />}
+    <div className="col-md-10 mx-auto" style={{ maxHeight: '100%' }}>
+      {detailsToRender()}
+      <div className="col-md-12 mx-auto my-3 text-center">
+        {formToRender()}
       </div>
     </div>
   );
@@ -113,6 +131,8 @@ ActivityLogComponent.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   isAddingPayment: PropTypes.bool.isRequired,
   onAddPaymentClicked: PropTypes.func.isRequired,
+  isAddingSession: PropTypes.bool.isRequired,
+  onAddSessionClicked: PropTypes.func.isRequired,
 };
 
 export default ActivityLogComponent;

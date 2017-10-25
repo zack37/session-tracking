@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const AddPaymentComponent = ({
-  onAddPaymentSubmitted,
+const AddSessionComponent = ({
+  onAddSessionSubmitted,
   date,
   onDateChanged,
   amount,
@@ -10,8 +10,8 @@ const AddPaymentComponent = ({
   onCancelClicked,
 }) => {
   return (
-    <form className="form col-md-6 mx-auto" onSubmit={onAddPaymentSubmitted}>
-      <h3>Add new payment</h3>
+    <form className="form col-md-6 mx-auto" onSubmit={onAddSessionSubmitted}>
+      <h3>Add new session</h3>
       <div className="form-group">
         <label htmlFor="date-input">Date</label>
         <input
@@ -45,15 +45,15 @@ const AddPaymentComponent = ({
           onClick={onCancelClicked}
         />
         <button type="submit" className="btn btn-success mx-2">
-          Add Payment
+          Add Session
         </button>
       </div>
     </form>
   );
 };
 
-AddPaymentComponent.propTypes = {
-  onAddPaymentSubmitted: PropTypes.func.isRequired,
+AddSessionComponent.propTypes = {
+  onAddSessionSubmitted: PropTypes.func.isRequired,
   date: PropTypes.string.isRequired,
   onDateChanged: PropTypes.func.isRequired,
   amount: PropTypes.number.isRequired,
@@ -61,4 +61,4 @@ AddPaymentComponent.propTypes = {
   onCancelClicked: PropTypes.func.isRequired,
 };
 
-export default AddPaymentComponent;
+export default AddSessionComponent;

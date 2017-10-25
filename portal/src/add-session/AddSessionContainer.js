@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { addPayment, cancelPayment, createPayment } from '../actions/payments';
+import { addSession, cancelSession, createSession } from '../actions/sessions';
 
-import AddPaymentComponent from './AddPaymentComponent';
+import AddSessionComponent from './AddSessionComponent';
 import PropTypes from 'prop-types';
-import { addBalance } from '../actions/clients';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { subtractBalance } from '../actions/clients';
 
-class AddPaymentContainer extends Component {
+class AddSessionContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -17,19 +17,19 @@ class AddPaymentContainer extends Component {
     };
   }
 
-  handleAddPaymentSubmitted = e => {
+  handleAddSessionSubmitted = e => {
     e.preventDefault();
 
     const { date, amount } = this.state;
 
-    const payment = { date, amount };
+    const session = { date, amount };
 
-    this.props.dispatch(createPayment(payment));
-    this.props.dispatch(addBalance(amount));
+    this.props.dispatch(createSession(session));
+    this.props.dispatch(subtractBalance(amount));
   };
 
-  handleCancelPayment = () => {
-    this.props.dispatch(cancelPayment());
+  handleCancelSession = () => {
+    this.props.dispatch(cancelSession());
   };
 
   handleDateChanged = ({ target: { value } }) => {
@@ -46,20 +46,18 @@ class AddPaymentContainer extends Component {
 
   render() {
     return (
-      <AddPaymentComponent
-        onAddPaymentSubmitted={this.handleAddPaymentSubmitted}
+      <AddSessionComponent
+        onAddSessionSubmitted={this.handleAddSessionSubmitted}
         date={this.state.date}
         onDateChanged={this.handleDateChanged}
         amount={this.state.amount}
         onAmountChanged={this.handleAmountChanged}
-        onCancelClicked={this.handleCancelPayment}
+        onCancelClicked={this.handleCancelSession}
       />
     );
   }
 }
 
-AddPaymentContainer.propTypes = {};
-
 const mapStateToProps = state => ({});
 
-export default connect(mapStateToProps)(AddPaymentContainer);
+export default connect(mapStateToProps)(AddSessionContainer);

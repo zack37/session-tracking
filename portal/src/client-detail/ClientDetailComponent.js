@@ -29,10 +29,10 @@ function renderClient({ name, balance }) {
 
 const ClientDetailComponent = ({ client }) => {
   return (
-    <div>
+    <div className="h-100">
       <div className="row p-4">{renderClient(client)}</div>
 
-      <div className="row">
+      <div className="row h-75">
         <ActivityLogContainer client={client} />
       </div>
     </div>

@@ -22,9 +22,7 @@ function payments(state = defaultState, { type, payload }) {
         isLoading: false,
         paymentsByClient: {
           ...state.paymentsByClient,
-          ...(payload
-            ? { [payload._id]: payload.paymentLog }
-            : {}),
+          ...(payload ? { [payload._id]: payload.paymentLog } : {}),
         },
       };
     case ADD_PAYMENT:
@@ -38,8 +36,8 @@ function payments(state = defaultState, { type, payload }) {
         paymentsByClient: {
           ...state.paymentsByClient,
           [payload.id]: [
-            ...state.paymentsByClient.payload.id,
-            payload.paymentLog,
+            ...state.paymentsByClient[payload.id],
+            { date: payload.date, amount: payload.amount },
           ],
         },
       };

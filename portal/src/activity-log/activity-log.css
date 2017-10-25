@@ -4,8 +4,10 @@
   border-color: #32383e;
 }
 
-.table {
-  max-height: 50%;
+.table-container {
+  max-height: 35rem;
+  width: 100%;
+  overflow-y: auto;
 }
 
 .loading {

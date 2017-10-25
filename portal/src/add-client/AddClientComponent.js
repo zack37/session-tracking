@@ -3,12 +3,13 @@ import React from 'react';
 
 const AddClientComponent = ({
   clientName,
-  handleClientNameChange,
-  handleFormSubmit,
+  onClientNameChanged,
+  onFormSubmitted,
+  onCancelClicked,
 }) => {
   return (
     <div className="d-block mx-auto col-sm-5">
-      <form className="form" onSubmit={handleFormSubmit}>
+      <form className="form" onSubmit={onFormSubmitted}>
         <div className="form-group">
           <label htmlFor="clientNameInput">Client Name</label>
           <input
@@ -16,14 +17,20 @@ const AddClientComponent = ({
             className="form-control"
             id="clientNameInput"
             value={clientName}
-            onChange={handleClientNameChange}
+            onChange={onClientNameChanged}
             required
           />
         </div>
 
-        <button type="submit" className="btn btn-primary float-right">
+        <button type="submit" className="btn btn-primary float-right mx-2">
           Add Client
         </button>
+        <input
+          type="button"
+          className="btn btn-light float-right mx-2"
+          onClick={onCancelClicked}
+          value="Cancel"
+        />
       </form>
     </div>
   );
@@ -31,8 +38,9 @@ const AddClientComponent = ({
 
 AddClientComponent.propTypes = {
   clientName: PropTypes.string,
-  handleClientNameChange: PropTypes.func.isRequired,
-  handleFormSubmit: PropTypes.func.isRequired,
+  onClientNameChanged: PropTypes.func.isRequired,
+  onFormSubmitted: PropTypes.func.isRequired,
+  onCancelClicked: PropTypes.func.isRequired,
 };
 
 export default AddClientComponent;

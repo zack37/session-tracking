@@ -9,8 +9,11 @@ const api = createApi(config.api.url);
 export const CLIENTS_REQUEST = 'CLIENTS_REQUEST';
 export const CLIENTS_RESPONSE = 'CLIENTS_RESPONSE';
 export const ADD_CLIENT = 'ADD_CLIENT';
+export const CANCEL_ADD_CLIENT = 'CANCEL_ADD_CLIENT';
 export const CLIENT_ADDED = 'CLIENT_ADDED';
 export const CLIENT_SELECTED = 'CLIENT_SELECTED';
+export const ADD_BALANCE = 'ADD_BALANCE';
+export const SUBTRACT_BALANCE = 'SUBTRACT_BALANCE';
 
 const requestClients = () => ({
   type: CLIENTS_REQUEST,
@@ -42,12 +45,26 @@ export const addClient = () => ({
   type: ADD_CLIENT,
 });
 
+export const cancelAddClient = () => ({
+  type: CANCEL_ADD_CLIENT,
+});
+
 export const createClient = client => dispatch => {
   return api
     .post('/clients', client)
     .map(clientAdded())
     .subscribe(dispatch);
 };
+
+export const addBalance = amount => ({
+  type: ADD_BALANCE,
+  payload: { amount },
+});
+
+export const subtractBalance = amount => ({
+  type: SUBTRACT_BALANCE,
+  payload: { amount }
+})
 
 export const selectClient = client => ({
   type: CLIENT_SELECTED,

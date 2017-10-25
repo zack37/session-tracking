@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ActivityLogComponent from './ActivityLogComponent';
 import PropTypes from 'prop-types';
 import { addPayment } from '../actions/payments';
+import { addSession } from '../actions/sessions';
 import { connect } from 'react-redux';
 
 class ActivityLogContainer extends Component {
@@ -10,6 +11,10 @@ class ActivityLogContainer extends Component {
   handleAddPaymentClicked = () => {
     this.props.dispatch(addPayment());
   };
+
+  handleAddSessionClicked = () => {
+    this.props.dispatch(addSession());
+  }
 
   render() {
     return (
@@ -19,6 +24,8 @@ class ActivityLogContainer extends Component {
         isLoading={this.props.isLoadingPayments || this.props.isLoadingSessions}
         isAddingPayment={this.props.isAddingPayment}
         onAddPaymentClicked={this.handleAddPaymentClicked}
+        isAddingSession={this.props.isAddingSession}
+        onAddSessionClicked={this.handleAddSessionClicked}
       />
     );
   }
