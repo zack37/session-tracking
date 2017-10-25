@@ -1,0 +1,8 @@
+{
+  "name": "session-tracker",
+  "version": "1.0.0",
+  "main": "server/build/server.js",
+  "repository": "git@github.com:zack37/session-tracker.git",
+  "author": "Zack Smith <zachary.smith@vivintsolar.com>",
+  "license": "MIT"
+}
