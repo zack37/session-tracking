@@ -32,7 +32,7 @@ const createTable = activity => {
     return (
       <tr key={key} className={rowClass}>
         <td>{startCase(type)}</td>
-        <td>{moment(date).format('MMMM DD, YYYY')}</td>
+        <td>{moment(date.substr(0, 10)).format('MMMM DD, YYYY')}</td>
         <td>${amount}</td>
       </tr>
     );
