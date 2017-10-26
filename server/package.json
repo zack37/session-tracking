@@ -6,6 +6,7 @@
   "author": "Zack Smith <zack.t.smith37@gmail.com",
   "license": "MIT",
   "scripts": {
+    "start": "node build/server.js",
     "build": "rm -rf build && babel src --out-dir build",
     "lint": "eslint ./",
     "run:local": "BABEL_ENV=local NODE_ENV=local nodemon index.js"

@@ -5,7 +5,8 @@
   "repository": "git@github.com:zack37/session-tracker.git",
   "author": "Zack Smith <zachary.smith@vivintsolar.com>",
   "license": "MIT",
+  "homepage": "https://zack37.github.io/session-tracker",
   "scripts": {
-    "start": "node server/build/server.js"
+    "deploy:web": "cd portal && yarn deploy"
   }
 }

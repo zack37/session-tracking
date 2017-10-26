@@ -23,9 +23,9 @@ const server = new Server({
 });
 
 server.connection({
-  port: process.env.PORT || 3000,
+  port: ~~process.env.PORT || 3000,
   labels: ['session-tracking'],
-  host: 'dev.vivintsolar.com',
+  // host: 'dev.vivintsolar.com',
 });
 
 async function bootstrap() {
