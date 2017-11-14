@@ -44,6 +44,8 @@
     "lout": "^10.0.3",
     "mod.js": "^2.0.0",
     "mongodb": "^2.2.33",
+    "pg": "^7.3.0",
+    "sequelize": "^4.20.1",
     "shortid": "^2.2.8",
     "source-map-support": "^0.5.0",
     "tv": "^6.1.0",

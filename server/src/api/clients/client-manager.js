@@ -1,10 +1,20 @@
-import mongoManager from '../../lib/mongo-manager';
+import * as sqlManager from '../../lib/sql-manager';
 
-/**
- * Exports the base mongo manager with the `withConnection` partially applied to
- * the `clients` database
- */
+import Sequelize from 'sequelize';
+
+const Client = sqlManager.define('client', {
+  name: Sequelize.STRING,
+  balance: Sequelize.FLOAT(10, 2)
+});
+
+Client.sync();
+
+async function updateBalance(id, amount) {
+  return await Client.increment({ balance: amount }, { where: { _id: id } });
+}
+
 export default {
-  ...mongoManager,
-  withConnection: mongoManager.withConnection('clients'),
+  Client,
+  updateBalance,
+  ...sqlManager
 };

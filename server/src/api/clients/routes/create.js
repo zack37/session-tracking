@@ -1,12 +1,4 @@
-import { insert, withConnection } from '../client-manager';
-import {
-  create as paymentCreate,
-  withConnection as paymentsConnection,
-} from '../payments/payments-manager';
-import {
-  create as sessionCreate,
-  withConnection as sessionsConnection,
-} from '../sessions/session-manager';
+import { Client, insert } from '../client-manager';
 
 import { CREATED } from 'http-status-codes';
 import { mutableFieldsStrict } from '../client-schema';
@@ -20,18 +12,8 @@ export default {
     },
   },
   handler: async (req, reply) => {
-    const response = await withConnection(async db => {
-      return await insert(db, { ...req.payload, balance: 0 });
-    });
+    const response = await insert(Client, { ...req.payload, balance: 0 });
 
-    await sessionsConnection(async db => {
-      return await sessionCreate(db, response._id);
-    });
-
-    await paymentsConnection(async db => {
-      return await paymentCreate(db, response._id);
-    });
-
-    reply.withEnvelope(response);
+    reply.withEnvelope(response, { code: CREATED });
   },
 };

@@ -8,6 +8,7 @@ const optionsSchema = joi
       .number()
       .integer()
       .min(0),
+    code: joi.number().integer().min(100).max(599).default(200),
   })
   .with('withPaging', 'count');
 
@@ -35,7 +36,7 @@ const plugin = {
       }
 
       try {
-        joi.assert(
+        const parsedOptions = joi.attempt(
           options,
           optionsSchema,
           'Invalid options supplied to `withEnvelope`'
@@ -50,7 +51,7 @@ const plugin = {
           data: await response,
         };
 
-        if (options.withPaging && options.count) {
+        if (parsedOptions.withPaging && parsedOptions.count) {
           const next = getNextLink(query, url.pathname, options.count);
           const prev = getPrevLink(query, url.pathname);
 
@@ -58,11 +59,11 @@ const plugin = {
             ...envelope.meta,
             ...(next ? { next } : {}),
             ...(prev ? { prev } : {}),
-            total: options.count,
+            total: parsedOptions.count,
           };
         }
 
-        this.response(envelope);
+        this.response(envelope).code(parsedOptions.code);
       } catch (e) {
         return this.response(boom.wrap(e));
       }

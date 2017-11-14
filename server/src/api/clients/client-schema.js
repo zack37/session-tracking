@@ -14,4 +14,4 @@ export const mutableFieldsStrict = mutableFields
 
 export const response = mutableFields.keys({
   _id: idSchema.required(),
-});
+}).unknown(true);
