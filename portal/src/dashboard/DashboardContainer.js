@@ -5,14 +5,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class DashboardContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isAddingClient: false,
-    };
-  }
-
   render() {
     return <DashboardComponent isAddingClient={this.props.isAddingClient} />;
   }

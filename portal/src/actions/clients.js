@@ -1,13 +1,9 @@
 import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/do';
 
-import config from '../config';
-import createApi from '../api';
-
-const api = createApi(config.api.url);
-
 export const CLIENTS_REQUEST = 'CLIENTS_REQUEST';
 export const CLIENTS_RESPONSE = 'CLIENTS_RESPONSE';
+export const CREATE_CLIENT = 'CREATE_CLIENT';
 export const ADD_CLIENT = 'ADD_CLIENT';
 export const CANCEL_ADD_CLIENT = 'CANCEL_ADD_CLIENT';
 export const CLIENT_ADDED = 'CLIENT_ADDED';
@@ -19,26 +15,18 @@ const requestClients = () => ({
   type: CLIENTS_REQUEST,
 });
 
-const receiveClients = () => clients => ({
+export const receiveClients = () => clients => ({
   type: CLIENTS_RESPONSE,
   payload: clients,
 });
 
-const clientAdded = () => client => ({
+export const clientAdded = () => client => ({
   type: CLIENT_ADDED,
   payload: client,
 });
 
-const fetchClients = () => dispatch => {
-  dispatch(requestClients());
-  return api
-    .get('/clients')
-    .map(receiveClients())
-    .subscribe(dispatch);
-};
-
-export const getClients = () => dispatch => {
-  return dispatch(fetchClients());
+export const getClients = () => {
+  return requestClients();
 };
 
 export const addClient = () => ({
@@ -49,12 +37,10 @@ export const cancelAddClient = () => ({
   type: CANCEL_ADD_CLIENT,
 });
 
-export const createClient = client => dispatch => {
-  return api
-    .post('/clients', client)
-    .map(clientAdded())
-    .subscribe(dispatch);
-};
+export const createClient = client => ({
+  type: CREATE_CLIENT,
+  payload: client,
+});
 
 export const addBalance = amount => ({
   type: ADD_BALANCE,

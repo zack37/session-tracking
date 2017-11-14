@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { addClient, getClients, selectClient } from '../actions/clients';
-import { cancelPayment, getPayments } from '../actions/payments';
-import { cancelSession, getSessions } from '../actions/sessions';
 
 import ClientListComponent from './ClientListComponent';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import fuzzysearch from 'fuzzysearch';
 
@@ -18,22 +17,15 @@ class ClientListContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(getClients());
+    this.props.getClients();
   }
 
   handleClientClicked = client => {
-    this.props.dispatch(selectClient(client));
-    this.props.dispatch(getSessions(client._id));
-    this.props.dispatch(getPayments(client._id));
-
-    // cancel open forms
-    this.props.dispatch(cancelPayment());
-    this.props.dispatch(cancelSession());
+    this.props.selectClient(client);
   };
 
   handleAddClientClicked = () => {
-    this.props.dispatch(addClient());
-    this.props.dispatch(cancelPayment());
+    this.props.addClient();
   };
 
   handleSearch = text => {
@@ -77,4 +69,14 @@ const mapStateToProps = state => ({
   isAdding: state.clients.isAdding,
 });
 
-export default connect(mapStateToProps)(ClientListContainer);
+const mapPropsToDispatch = dispatch => {
+  const actions = {
+    getClients,
+    addClient,
+    selectClient,
+  };
+
+  return bindActionCreators(actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapPropsToDispatch)(ClientListContainer);

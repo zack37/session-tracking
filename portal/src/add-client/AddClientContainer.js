@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { cancelAddClient, createClient } from '../actions/clients';
 
 import AddClientComponent from './AddClientComponent';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 class AddClientContainer extends Component {
@@ -20,7 +21,7 @@ class AddClientContainer extends Component {
   };
 
   handleCancelClicked = () => {
-    this.props.dispatch(cancelAddClient());
+    this.props.cancelAddClient();
   }
 
   handleFormSubmit = e => {
@@ -30,7 +31,7 @@ class AddClientContainer extends Component {
 
     const client = { name };
 
-    return this.props.dispatch(createClient(client));
+    return this.props.createClient(client);
   };
 
   render() {
@@ -46,5 +47,13 @@ class AddClientContainer extends Component {
 }
 
 const mapStateToProps = state => ({});
+const mapPropsToDispatch = dispatch => {
+  const actions = {
+    createClient,
+    cancelAddClient,
+  };
 
-export default connect(mapStateToProps)(AddClientContainer);
+  return bindActionCreators(actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapPropsToDispatch)(AddClientContainer);

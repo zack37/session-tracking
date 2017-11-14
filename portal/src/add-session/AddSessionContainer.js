@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { cancelSession, createSession } from '../actions/sessions';
 
 import AddSessionComponent from './AddSessionComponent';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { subtractBalance } from '../actions/clients';
 
 class AddSessionContainer extends Component {
   constructor(props) {
@@ -23,12 +23,11 @@ class AddSessionContainer extends Component {
 
     const session = { date, amount };
 
-    this.props.dispatch(createSession(session));
-    this.props.dispatch(subtractBalance(amount));
+    this.props.createSession(session);
   };
 
   handleCancelSession = () => {
-    this.props.dispatch(cancelSession());
+    this.props.cancelSession();
   };
 
   handleDateChanged = ({ target: { value } }) => {
@@ -58,5 +57,13 @@ class AddSessionContainer extends Component {
 }
 
 const mapStateToProps = state => ({});
+const mapPropsToDispatch = dispatch => {
+  const actions = {
+    createSession,
+    cancelSession,
+  };
 
-export default connect(mapStateToProps)(AddSessionContainer);
+  return bindActionCreators(actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapPropsToDispatch)(AddSessionContainer);
