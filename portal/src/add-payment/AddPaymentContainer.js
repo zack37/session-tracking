@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { cancelPayment, createPayment } from '../actions/payments';
 
 import AddPaymentComponent from './AddPaymentComponent';
-import { addBalance } from '../actions/clients';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -23,12 +23,11 @@ class AddPaymentContainer extends Component {
 
     const payment = { date, amount };
 
-    this.props.dispatch(createPayment(payment));
-    this.props.dispatch(addBalance(amount));
+    this.props.createPayment(payment);
   };
 
   handleCancelPayment = () => {
-    this.props.dispatch(cancelPayment());
+    this.props.cancelPayment();
   };
 
   handleDateChanged = ({ target: { value } }) => {
@@ -60,5 +59,13 @@ class AddPaymentContainer extends Component {
 AddPaymentContainer.propTypes = {};
 
 const mapStateToProps = state => ({});
+const mapPropsToDispatch = dispatch => {
+  const actions = {
+    createPayment,
+    cancelPayment,
+  };
 
-export default connect(mapStateToProps)(AddPaymentContainer);
+  return bindActionCreators(actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapPropsToDispatch)(AddPaymentContainer);

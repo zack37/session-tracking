@@ -1,60 +1,31 @@
 import React, { Component } from 'react';
-import { addClient, getClients, selectClient } from '../actions/clients';
-import { cancelPayment, getPayments } from '../actions/payments';
-import { cancelSession, getSessions } from '../actions/sessions';
+import { addClient, getClients, searchClients, selectClient } from '../actions/clients';
 
 import ClientListComponent from './ClientListComponent';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import fuzzysearch from 'fuzzysearch';
 
 class ClientListContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      searchTerm: '',
-    };
-  }
-
   componentDidMount() {
-    this.props.dispatch(getClients());
+    this.props.getClients();
   }
 
   handleClientClicked = client => {
-    this.props.dispatch(selectClient(client));
-    this.props.dispatch(getSessions(client._id));
-    this.props.dispatch(getPayments(client._id));
-
-    // cancel open forms
-    this.props.dispatch(cancelPayment());
-    this.props.dispatch(cancelSession());
+    this.props.selectClient(client);
   };
 
   handleAddClientClicked = () => {
-    this.props.dispatch(addClient());
-    this.props.dispatch(cancelPayment());
-  };
-
-  handleSearch = text => {
-    this.setState({
-      searchTerm: text.toLowerCase(),
-    });
+    this.props.addClient();
   };
 
   render() {
-    const filteredClients = this.state.searchTerm
-      ? this.props.clients.filter(x =>
-          fuzzysearch(this.state.searchTerm, x.name.toLowerCase())
-        )
-      : this.props.clients;
-
     return (
       <ClientListComponent
         isLoading={this.props.isLoading}
-        clients={filteredClients}
+        clients={this.props.clients}
         selectedClient={this.props.selectedClient}
-        onSearch={this.handleSearch}
+        onSearch={this.props.searchClients}
         onClientClicked={this.handleClientClicked}
         onAddClientClicked={this.handleAddClientClicked}
         isAdding={this.props.isAdding}
@@ -72,9 +43,20 @@ ClientListContainer.propTypes = {
 
 const mapStateToProps = state => ({
   isLoading: state.clients.isLoading,
-  clients: state.clients.clients,
+  clients: state.clients.clients || state.clients.filteredClients,
   selectedClient: state.clients.selectedClient,
   isAdding: state.clients.isAdding,
 });
 
-export default connect(mapStateToProps)(ClientListContainer);
+const mapPropsToDispatch = dispatch => {
+  const actions = {
+    getClients,
+    addClient,
+    searchClients,
+    selectClient,
+  };
+
+  return bindActionCreators(actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapPropsToDispatch)(ClientListContainer);

@@ -4,17 +4,17 @@ import ActivityLogComponent from './ActivityLogComponent';
 import PropTypes from 'prop-types';
 import { addPayment } from '../actions/payments';
 import { addSession } from '../actions/sessions';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 class ActivityLogContainer extends Component {
-
   handleAddPaymentClicked = () => {
-    this.props.dispatch(addPayment());
+    this.props.addPayment();
   };
 
   handleAddSessionClicked = () => {
-    this.props.dispatch(addSession());
-  }
+    this.props.addSession();
+  };
 
   render() {
     return (
@@ -32,7 +32,6 @@ class ActivityLogContainer extends Component {
 }
 
 ActivityLogContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   sessions: PropTypes.array,
   payments: PropTypes.array,
   isLoadingSessions: PropTypes.bool.isRequired,
@@ -53,4 +52,15 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(ActivityLogContainer);
+const mapPropsToDispatch = dispatch => {
+  const actions = {
+    addPayment,
+    addSession,
+  };
+
+  return bindActionCreators(actions, dispatch);
+};
+
+export default connect(mapStateToProps, mapPropsToDispatch)(
+  ActivityLogContainer
+);
