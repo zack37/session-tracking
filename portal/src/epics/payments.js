@@ -1,6 +1,7 @@
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
@@ -40,7 +41,7 @@ export const createPaymentEpic = (action$, store) => {
   return action$
     .ofType(CREATE_PAYMENT)
     .filter(() => !!id())
-    .mergeMap(action => {
+    .switchMap(action => {
       const payment = action.payload;
 
       return api.post(`/clients/${id()}/payments`, payment).mergeMap(() => {

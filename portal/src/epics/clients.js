@@ -1,3 +1,4 @@
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -31,7 +32,7 @@ export const createClientEpic = action$ => {
 export const getClientsEpic = action$ => {
   return action$
     .ofType(CLIENTS_REQUEST)
-    .mergeMap(() => api.get('/clients'))
+    .switchMap(() => api.get('/clients'))
     .map(receiveClients());
 };
 

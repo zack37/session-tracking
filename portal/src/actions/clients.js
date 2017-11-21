@@ -1,6 +1,3 @@
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/do';
-
 export const CLIENTS_REQUEST = 'CLIENTS_REQUEST';
 export const CLIENTS_RESPONSE = 'CLIENTS_RESPONSE';
 export const CREATE_CLIENT = 'CREATE_CLIENT';
@@ -10,6 +7,7 @@ export const CLIENT_ADDED = 'CLIENT_ADDED';
 export const CLIENT_SELECTED = 'CLIENT_SELECTED';
 export const ADD_BALANCE = 'ADD_BALANCE';
 export const SUBTRACT_BALANCE = 'SUBTRACT_BALANCE';
+export const SEARCH_CLIENTS = 'SEARCH_CLIENTS';
 
 const requestClients = () => ({
   type: CLIENTS_REQUEST,
@@ -49,10 +47,15 @@ export const addBalance = amount => ({
 
 export const subtractBalance = amount => ({
   type: SUBTRACT_BALANCE,
-  payload: { amount }
-})
+  payload: { amount },
+});
 
 export const selectClient = client => ({
   type: CLIENT_SELECTED,
   payload: client,
+});
+
+export const searchClients = searchTerm => ({
+  type: SEARCH_CLIENTS,
+  payload: { searchTerm }
 });

@@ -6,11 +6,15 @@ import {
   CLIENTS_RESPONSE,
   CLIENT_ADDED,
   CLIENT_SELECTED,
+  SEARCH_CLIENTS,
   SUBTRACT_BALANCE,
 } from '../actions/clients';
 
+import fuzzysearch from 'fuzzysearch';
+
 const defaultState = {
   clients: [],
+  filteredClients: null,
   isLoading: false,
   isAdding: false,
   selectedClient: null,
@@ -53,6 +57,15 @@ function clients(state = defaultState, { type, payload }) {
           ...state.selectedClient,
           balance: state.selectedClient.balance - payload.amount,
         },
+      };
+    case SEARCH_CLIENTS:
+      return {
+        ...state,
+        filteredClients: payload.searchTerm
+          ? state.clients.filter(x =>
+              fuzzysearch(payload.searchTerm, x.name.toLowerCase())
+            )
+          : null,
       };
     default:
       return state;
