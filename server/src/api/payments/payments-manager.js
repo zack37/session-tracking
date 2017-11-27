@@ -1,11 +1,11 @@
-import * as sqlManager from '../../../lib/sql-manager';
+import * as sqlManager from '../../lib/sql-manager';
 
-import { Client } from '../client-manager';
+import { Client } from '../clients/client-manager';
 import Sequelize from 'sequelize';
 
 const Payment = sqlManager.define('payment', {
   date: Sequelize.DATEONLY,
-  amount: Sequelize.FLOAT(10, 2),
+  amount: Sequelize.DECIMAL(2),
   clientId: {
     type: Sequelize.STRING,
     references: {
@@ -14,8 +14,6 @@ const Payment = sqlManager.define('payment', {
     },
   },
 });
-
-Payment.sync();
 
 export default {
   ...sqlManager,

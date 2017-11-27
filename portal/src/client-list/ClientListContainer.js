@@ -43,7 +43,7 @@ ClientListContainer.propTypes = {
 
 const mapStateToProps = state => ({
   isLoading: state.clients.isLoading,
-  clients: state.clients.clients || state.clients.filteredClients,
+  clients: state.clients.filteredClients || state.clients.clients,
   selectedClient: state.clients.selectedClient,
   isAdding: state.clients.isAdding,
 });

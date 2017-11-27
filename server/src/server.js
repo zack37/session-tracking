@@ -5,6 +5,9 @@ import { cyan, green } from 'chalk';
 import { Server } from 'hapi';
 import pkg from '../package';
 import registerPlugins from './plugins';
+import { Client } from './api/clients/client-manager';
+import { Session } from './api/sessions/session-manager';
+import { Payment } from './api/payments/payments-manager';
 
 const server = new Server({
   connections: {
@@ -22,6 +25,12 @@ const server = new Server({
   },
 });
 
+async function sync() {
+  await Client.sync();
+  await Session.sync();
+  await Payment.sync();
+}
+
 server.connection({
   port: ~~process.env.PORT || 3000,
   labels: ['session-tracking'],
@@ -34,6 +43,7 @@ async function bootstrap() {
 
     await registerPlugins(server);
     await server.initialize();
+    await sync();
 
     if (process.env.NODE_ENV !== 'test') {
       await server.start();

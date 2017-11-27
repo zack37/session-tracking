@@ -2,7 +2,7 @@ import { Session, insert } from '../session-manager';
 
 import { NO_CONTENT } from 'http-status-codes';
 import { mutableFieldsStrict } from '../session-schema';
-import { updateBalance } from '../../client-manager';
+import { updateBalance } from '../../clients/client-manager';
 
 export default {
   method: 'POST',

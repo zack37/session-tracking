@@ -5,6 +5,7 @@ import {
   SESSIONS_RESPONSE,
   SESSION_ADDED,
 } from '../actions/sessions';
+import reducerFactory from './reducer-factory';
 
 const defaultState = {
   isLoading: false,
@@ -12,38 +13,29 @@ const defaultState = {
   sessionsByClient: {},
 };
 
-function sessions(state = defaultState, { type, payload }) {
-  switch (type) {
-    case SESSIONS_REQUEST:
-      return { ...state, isLoading: true };
-    case SESSIONS_RESPONSE:
-      return {
-        ...state,
-        isLoading: false,
-        sessionsByClient: {
-          ...state.sessionsByClient,
-          ...(payload ? { [payload._id]: payload.sessionLog } : {}),
-        },
-      };
-    case ADD_SESSION:
-      return { ...state, isAdding: true };
-    case CANCEL_ADD_SESSION:
-      return { ...state, isAdding: false };
-    case SESSION_ADDED:
-      return {
-        ...state,
-        isAdding: false,
-        sessionsByClient: {
-          ...state.sessionsByClient,
-          [payload.id]: [
-            ...state.sessionsByClient[payload.id],
-            { date: payload.date, amount: payload.amount },
-          ],
-        },
-      };
-    default:
-      return state;
-  }
-}
+const sessions = reducerFactory(defaultState, {
+  [SESSIONS_REQUEST]: state => ({ ...state, isLoading: true }),
+  [SESSIONS_RESPONSE]: (state, { payload }) => ({
+    ...state,
+    isLoading: false,
+    sessionsByClient: {
+      ...state.sessionsByClient,
+      ...(payload ? { [payload._id]: payload.sessionLog } : {}),
+    },
+  }),
+  [ADD_SESSION]: state => ({ ...state, isAdding: true }),
+  [CANCEL_ADD_SESSION]: state => ({ ...state, isAdding: false }),
+  [SESSION_ADDED]: (state, { payload }) => ({
+    ...state,
+    isAdding: false,
+    sessionsByClient: {
+      ...state.sessionsByClient,
+      [payload.id]: [
+        ...state.sessionsByClient[payload.id],
+        { date: payload.date, amount: payload.amount },
+      ],
+    },
+  }),
+});
 
 export default sessions;

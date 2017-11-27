@@ -11,6 +11,8 @@ import {
 } from '../actions/clients';
 
 import fuzzysearch from 'fuzzysearch';
+import reducerFactory from './reducer-factory';
+import { filter } from 'ramda';
 
 const defaultState = {
   clients: [],
@@ -20,56 +22,49 @@ const defaultState = {
   selectedClient: null,
 };
 
-function clients(state = defaultState, { type, payload }) {
-  switch (type) {
-    case ADD_CLIENT:
-      return { ...state, isAdding: true, selectedClient: null };
-    case CANCEL_ADD_CLIENT:
-      return { ...state, isAdding: false };
-    case CLIENT_ADDED:
-      return {
-        ...state,
-        isAdding: false,
-        clients: [...state.clients, payload],
-      };
-    case CLIENTS_REQUEST:
-      return { ...state, isLoading: true };
-    case CLIENTS_RESPONSE:
-      return {
-        ...state,
-        isLoading: false,
-        clients: payload,
-      };
-    case CLIENT_SELECTED:
-      return { ...state, isAdding: false, selectedClient: payload };
-    case ADD_BALANCE:
-      return {
-        ...state,
-        selectedClient: {
-          ...state.selectedClient,
-          balance: state.selectedClient.balance + payload.amount,
-        },
-      };
-    case SUBTRACT_BALANCE:
-      return {
-        ...state,
-        selectedClient: {
-          ...state.selectedClient,
-          balance: state.selectedClient.balance - payload.amount,
-        },
-      };
-    case SEARCH_CLIENTS:
-      return {
-        ...state,
-        filteredClients: payload.searchTerm
-          ? state.clients.filter(x =>
-              fuzzysearch(payload.searchTerm, x.name.toLowerCase())
-            )
-          : null,
-      };
-    default:
-      return state;
-  }
-}
+const searchClientName = (clients, searchTerm) => {
+  return filter(x => fuzzysearch(searchTerm, x.name.toLowerCase()), clients);
+};
+
+const clients = reducerFactory(defaultState, {
+  [ADD_CLIENT]: state => ({ ...state, isAdding: true, selectedClient: null }),
+  [CANCEL_ADD_CLIENT]: state => ({ ...state, isAdding: false }),
+  [CLIENT_ADDED]: (state, { payload }) => ({
+    ...state,
+    isAdding: false,
+    clients: [...state.clients, payload],
+  }),
+  [CLIENTS_REQUEST]: state => ({ ...state, isLoading: true }),
+  [CLIENTS_RESPONSE]: (state, { payload }) => ({
+    ...state,
+    isLoading: false,
+    clients: payload,
+  }),
+  [CLIENT_SELECTED]: (state, { payload }) => ({
+    ...state,
+    isAdding: false,
+    selectedClient: payload,
+  }),
+  [ADD_BALANCE]: (state, { payload }) => ({
+    ...state,
+    selectedClient: {
+      ...state.selectedClient,
+      balance: state.selectedClient.balance + payload.amount,
+    },
+  }),
+  [SUBTRACT_BALANCE]: (state, { payload }) => ({
+    ...state,
+    selectedClient: {
+      ...state.selectedClient,
+      balance: state.selectedClient.balance - payload.amount,
+    },
+  }),
+  [SEARCH_CLIENTS]: (state, { payload }) => ({
+    ...state,
+    filteredClients: payload.searchTerm
+      ? searchClientName(state.clients, payload.searchTerm.toLowerCase())
+      : null,
+  }),
+});
 
 export default clients;
