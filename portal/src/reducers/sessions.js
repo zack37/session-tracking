@@ -5,37 +5,29 @@ import {
   SESSIONS_RESPONSE,
   SESSION_ADDED,
 } from '../actions/sessions';
+import { List, Map } from 'immutable';
 import reducerFactory from './reducer-factory';
 
-const defaultState = {
+const defaultState = Map({
   isLoading: false,
   isAdding: false,
-  sessionsByClient: {},
-};
+  sessionsByClient: Map({}),
+});
 
 const sessions = reducerFactory(defaultState, {
-  [SESSIONS_REQUEST]: state => ({ ...state, isLoading: true }),
-  [SESSIONS_RESPONSE]: (state, { payload }) => ({
-    ...state,
-    isLoading: false,
-    sessionsByClient: {
-      ...state.sessionsByClient,
-      ...(payload ? { [payload._id]: payload.sessionLog } : {}),
-    },
-  }),
-  [ADD_SESSION]: state => ({ ...state, isAdding: true }),
-  [CANCEL_ADD_SESSION]: state => ({ ...state, isAdding: false }),
-  [SESSION_ADDED]: (state, { payload }) => ({
-    ...state,
-    isAdding: false,
-    sessionsByClient: {
-      ...state.sessionsByClient,
-      [payload.id]: [
-        ...state.sessionsByClient[payload.id],
-        { date: payload.date, amount: payload.amount },
-      ],
-    },
-  }),
+  [SESSIONS_REQUEST]: state => state.set('isLoading', true),
+  [SESSIONS_RESPONSE]: (state, { payload }) =>
+    state
+      .set('isLoading', false)
+      .setIn(['sessionsByClient', payload._id], List(payload.sessionLog)),
+  [ADD_SESSION]: state => state.set('isAdding', true),
+  [CANCEL_ADD_SESSION]: state => state.set('isAdding', false),
+  [SESSION_ADDED]: (state, { payload }) =>
+    state
+      .set('isAdding', false)
+      .updateIn(['sessionsByClient', payload.id], List(), sessions =>
+        sessions.push({ date: payload.date, amount: payload.amount })
+      ),
 });
 
 export default sessions;

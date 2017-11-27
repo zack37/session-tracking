@@ -4,7 +4,7 @@ import Sequelize from 'sequelize';
 
 const Client = sqlManager.define('client', {
   name: Sequelize.STRING,
-  balance: Sequelize.DECIMAL(2),
+  balance: Sequelize.INTEGER(5)
 });
 
 async function updateBalance(id, amount) {

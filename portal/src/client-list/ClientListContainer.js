@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { addClient, getClients, searchClients, selectClient } from '../actions/clients';
+import {
+  addClient,
+  getClients,
+  searchClients,
+  selectClient,
+} from '../actions/clients';
 
 import ClientListComponent from './ClientListComponent';
 import PropTypes from 'prop-types';
@@ -41,12 +46,18 @@ ClientListContainer.propTypes = {
   isAdding: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({
-  isLoading: state.clients.isLoading,
-  clients: state.clients.filteredClients || state.clients.clients,
-  selectedClient: state.clients.selectedClient,
-  isAdding: state.clients.isAdding,
-});
+const mapStateToProps = state => {
+  const selectedClient = state.clients.get('selectedClient');
+
+  return {
+    isLoading: state.clients.get('isLoading'),
+    clients: (
+      state.clients.get('filteredClients') || state.clients.get('clients')
+    ).toJS(),
+    selectedClient: selectedClient && selectedClient.toJS(),
+    isAdding: state.clients.get('isAdding'),
+  };
+};
 
 const mapPropsToDispatch = dispatch => {
   const actions = {
@@ -59,4 +70,6 @@ const mapPropsToDispatch = dispatch => {
   return bindActionCreators(actions, dispatch);
 };
 
-export default connect(mapStateToProps, mapPropsToDispatch)(ClientListContainer);
+export default connect(mapStateToProps, mapPropsToDispatch)(
+  ClientListContainer
+);

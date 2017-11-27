@@ -40,15 +40,17 @@ ActivityLogContainer.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const clientId = state.clients.selectedClient._id;
+  const clientId = state.clients.getIn(['selectedClient', '_id']);
+  const sessions = state.sessions.getIn(['sessionsByClient', clientId]);
+  const payments = state.payments.getIn(['paymentsByClient', clientId]);
 
   return {
-    sessions: state.sessions.sessionsByClient[clientId] || [],
-    payments: state.payments.paymentsByClient[clientId] || [],
-    isLoadingSessions: state.sessions.isLoading,
-    isLoadingPayments: state.payments.isLoading,
-    isAddingPayment: state.payments.isAdding,
-    isAddingSession: state.sessions.isAdding,
+    sessions: sessions ? sessions.toJS() : [],
+    payments: payments ? payments.toJS() : [],
+    isLoadingSessions: state.sessions.get('isLoading'),
+    isAddingSession: state.sessions.get('isAdding'),
+    isLoadingPayments: state.payments.get('isLoading'),
+    isAddingPayment: state.payments.get('isAdding'),
   };
 };
 

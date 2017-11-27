@@ -15,7 +15,7 @@ DashboardContainer.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAddingClient: state.clients.isAdding,
+  isAddingClient: state.clients.get('isAdding'),
 });
 
 export default connect(mapStateToProps)(DashboardContainer);

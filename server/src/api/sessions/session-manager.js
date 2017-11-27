@@ -5,7 +5,7 @@ import Sequelize from 'sequelize';
 
 const Session = sqlManager.define('session', {
   date: Sequelize.DATEONLY,
-  amount: Sequelize.DECIMAL(2),
+  amount: Sequelize.INTEGER(5),
   clientId: {
     type: Sequelize.STRING,
     references: {

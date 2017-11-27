@@ -5,37 +5,30 @@ import {
   PAYMENTS_RESPONSE,
   PAYMENT_ADDED,
 } from '../actions/payments';
+
+import { List, Map } from 'immutable';
 import reducerFactory from './reducer-factory';
 
-const defaultState = {
+const defaultState = Map({
   isLoading: false,
   isAdding: false,
-  paymentsByClient: {},
-};
+  paymentsByClient: Map({}),
+});
 
 const payments = reducerFactory(defaultState, {
-  [PAYMENTS_REQUEST]: state => ({ ...state, isLoading: true }),
-  [PAYMENTS_RESPONSE]: (state, { payload }) => ({
-    ...state,
-    isLoading: false,
-    paymentsByClient: {
-      ...state.paymentsByClient,
-      ...(payload ? { [payload._id]: payload.paymentLog } : {}),
-    },
-  }),
-  [ADD_PAYMENT]: state => ({ ...state, isAdding: true }),
-  [CANCEL_ADD_PAYMENT]: state => ({ ...state, isAdding: false }),
-  [PAYMENT_ADDED]: (state, { payload }) => ({
-    ...state,
-    isAdding: false,
-    paymentsByClient: {
-      ...state.paymentsByClient,
-      [payload.id]: [
-        ...state.paymentsByClient[payload.id],
-        { date: payload.date, amount: payload.amount },
-      ],
-    },
-  }),
+  [PAYMENTS_REQUEST]: state => state.set('isLoading', true),
+  [PAYMENTS_RESPONSE]: (state, { payload }) =>
+    state
+      .set('isLoading', false)
+      .setIn(['paymentsByClient', payload._id], List(payload.paymentLog)),
+  [ADD_PAYMENT]: state => state.set('isAdding', true),
+  [CANCEL_ADD_PAYMENT]: state => state.set('isAdding', false),
+  [PAYMENT_ADDED]: (state, { payload }) =>
+    state
+      .set('isAdding', false)
+      .updateIn(['paymentsByClient', payload.id], List(), payments =>
+        payments.push({ date: payload.date, amount: payload.amount })
+      ),
 });
 
 export default payments;
