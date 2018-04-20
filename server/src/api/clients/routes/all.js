@@ -8,6 +8,7 @@ export default {
   method: 'GET',
   path: '/clients',
   config: {
+    auth: false,
     validate: {
       query: joi
         .object({

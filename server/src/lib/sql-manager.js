@@ -9,7 +9,7 @@ export function define(modelName, fields) {
       defaultValue: generate,
       primaryKey: true,
     },
-    ...fields
+    ...fields,
   });
 }
 
@@ -23,6 +23,10 @@ export async function query(model, params = {}) {
 
 export async function byId(model, id) {
   return await model.findById(id);
+}
+
+export async function find(model, params = {}) {
+  return await model.findOne({ where: params });
 }
 
 export async function insert(model, data) {

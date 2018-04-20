@@ -46,16 +46,16 @@ ClientListContainer.propTypes = {
   isAdding: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => {
-  const selectedClient = state.clients.get('selectedClient');
+const mapStateToProps = ({ clients }) => {
+  const selectedClient = clients.get('selectedClient');
 
   return {
-    isLoading: state.clients.get('isLoading'),
+    isLoading: clients.get('isLoading'),
     clients: (
-      state.clients.get('filteredClients') || state.clients.get('clients')
+      clients.get('filteredClients') || clients.get('clients')
     ).toJS(),
     selectedClient: selectedClient && selectedClient.toJS(),
-    isAdding: state.clients.get('isAdding'),
+    isAdding: clients.get('isAdding'),
   };
 };
 

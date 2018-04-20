@@ -23,11 +23,13 @@ const sessions = reducerFactory(defaultState, {
   [ADD_SESSION]: state => state.set('isAdding', true),
   [CANCEL_ADD_SESSION]: state => state.set('isAdding', false),
   [SESSION_ADDED]: (state, { payload }) =>
-    state
-      .set('isAdding', false)
-      .updateIn(['sessionsByClient', payload.id], List(), sessions =>
-        sessions.push({ date: payload.date, amount: payload.amount })
-      ),
+    state.withMutations(state =>
+      state
+        .set('isAdding', false)
+        .updateIn(['sessionsByClient', payload.id], List(), sessions =>
+          sessions.push({ date: payload.date, amount: payload.amount })
+        )
+    ),
 });
 
 export default sessions;

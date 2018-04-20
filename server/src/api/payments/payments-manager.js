@@ -5,7 +5,7 @@ import Sequelize from 'sequelize';
 
 const Payment = sqlManager.define('payment', {
   date: Sequelize.DATEONLY,
-  amount: Sequelize.INTEGER(5),
+  amount: Sequelize.INTEGER,
   clientId: {
     type: Sequelize.STRING,
     references: {

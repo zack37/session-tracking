@@ -6,6 +6,7 @@ export default {
   method: 'GET',
   path: '/clients/{id}',
   config: {
+    auth: false,
     validate: {
       params: {
         id: idSchema,

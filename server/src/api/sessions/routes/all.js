@@ -3,6 +3,9 @@ import { Session, query } from '../session-manager';
 export default {
   method: 'GET',
   path: '/clients/{id}/sessions',
+  config: {
+    auth: false,
+  },
   handler: async (req, reply) => {
     const clientId = req.params.id;
 
