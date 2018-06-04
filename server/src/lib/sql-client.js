@@ -1,8 +1,11 @@
-import Sequelize from 'sequelize';
+import { Pool } from 'pg';
 
-const sequelize = new Sequelize(
-  process.env.POSTGRES_URI ||
-    'postgres://postgres@localhost:5432/session-tracker'
-);
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'session-tracker',
+  password: 'password',
+  port: 5432,
+});
 
-export default sequelize;
+export default pool;

@@ -1,7 +1,7 @@
 import good from 'good';
 
 export default {
-  register: good,
+  plugin: good,
   options: {
     ops: { interval: 10000 },
     reporters: {

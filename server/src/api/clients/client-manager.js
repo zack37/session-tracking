@@ -1,26 +1,17 @@
-import * as sqlManager from '../../lib/sql-manager';
-import { Trainer } from '../trainers/trainer-manager';
+import * as baseManager from '../../lib/sql-manager';
+import sql from 'sql-query';
 
-import Sequelize from 'sequelize';
+const sqlQuery = sql.Query('postgresql');
 
-const Client = sqlManager.define('client', {
-  name: Sequelize.STRING,
-  balance: Sequelize.INTEGER,
-  trainerId: {
-    type: Sequelize.STRING,
-    references: {
-      model: Trainer,
-      key: '_id',
-    }
-  }
-});
+export const getAll = baseManager.getAll('clients');
+export const getById = baseManager.getById('clients');
+export const create = baseManager.create('clients');
+export const update = baseManager.update('clients');
+export const getPayments = baseManager.getAll('payments');
+export const logPayment = baseManager.create('payments');
+export const getSessions = baseManager.getAll('sessions');
+export const logSession = baseManager.create('sessions');
 
-async function updateBalance(id, amount) {
-  return await Client.increment({ balance: amount }, { where: { _id: id } });
-}
-
-export default {
-  Client,
-  updateBalance,
-  ...sqlManager
-};
+export const getByTrainerId = trainerId => getAll({ trainerId });
+export const assignTrainer = ({ trainerId, clientId }) =>
+  update({ trainerId }, { id: clientId });

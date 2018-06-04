@@ -4,7 +4,10 @@ const metaSchema = joi.object({
   self: joi.string().required(),
   next: joi.string(),
   prev: joi.string(),
-  total: joi.number().min(0).integer(),
+  total: joi
+    .number()
+    .min(0)
+    .integer(),
 });
 
 export default dataSchema =>

@@ -1,11 +1,8 @@
-import * as sqlManager from '../../lib/sql-manager';
-import Sequelize from 'sequelize';
-
-const Trainer = sqlManager.define('trainer', {
-  email: Sequelize.STRING,
-  name: Sequelize.STRING,
-});
+import * as baseManager from '../../lib/sql-manager';
 
 export default {
-  Trainer,
+  getAll: baseManager.getAll('trainers'),
+  getById: baseManager.getById('trainers'),
+  findOne: baseManager.findOne('trainers'),
+  create: baseManager.create('trainers'),
 };

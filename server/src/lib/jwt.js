@@ -1,7 +1,7 @@
 import path from 'path';
 import { readFile } from 'fs';
-import { sign } from 'jsonwebtoken';
 import { promisify } from 'util';
+import { sign } from 'jsonwebtoken';
 
 const readFileAsync = promisify(readFile);
 const signAsync = promisify(sign);
@@ -17,11 +17,11 @@ export async function createToken(payload) {
       algorithm: 'RS256',
       expiresIn: '1h',
       issuer: 'session-tracker',
-    }
+    },
   );
   return token;
 }
 
-export async function getPublicKey() {
-  return await readFileAsync(path.join(process.env.PWD, 'public.pem'));
+export function getPublicKey() {
+  return readFileAsync(path.join(process.env.PWD, 'public.pem'));
 }

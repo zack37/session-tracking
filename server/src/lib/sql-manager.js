@@ -1,34 +1,67 @@
-import Sequelize from 'sequelize';
-import { generate } from 'shortid';
-import sqlClient from './sql-client';
+import shortid from 'shortid';
+import sql from 'sql-query';
+import client from './sql-client';
 
-export function define(modelName, fields) {
-  return sqlClient.define(modelName, {
-    _id: {
-      type: Sequelize.STRING,
-      defaultValue: generate,
-      primaryKey: true,
-    },
-    ...fields,
-  });
-}
+const sqlQuery = sql.Query('postgresql');
 
-export async function count(model, params = {}) {
-  return await model.count({ where: params });
-}
+/**
+ * "Base" functions for fetching data from postgres
+ * Each function is curried to take the table name as an argument
+ * All "implementing" manager should explicitly include each function
+ */
 
-export async function query(model, params = {}) {
-  return await model.findAll({ where: params });
-}
+/**
+ * Queries for `params` and returns all results
+ */
+export const getAll = table => async params => {
+  const query = sqlQuery
+    .select()
+    .from(table)
+    .where(params)
+    .build();
 
-export async function byId(model, id) {
-  return await model.findById(id);
-}
+  const response = await client.query(query);
 
-export async function find(model, params = {}) {
-  return await model.findOne({ where: params });
-}
+  return response.rows;
+};
 
-export async function insert(model, data) {
-  return await model.create(data);
-}
+export const getById = table => async id => {
+  return findOne(table)({ id });
+};
+
+export const findOne = table => async params => {
+  const query = sqlQuery
+    .select()
+    .from(table)
+    .where(params)
+    .limit(1)
+    .build();
+
+  const response = await client.query(query);
+
+  return response.rows[0];
+};
+
+export const create = table => async fields => {
+  const id = shortid.generate();
+  const query = sqlQuery
+    .insert()
+    .into(table)
+    .set({ id, ...fields })
+    .build();
+
+  await client.query(query);
+
+  return getById(id);
+};
+
+export const update = table => async (fields, filter) => {
+  const query = sqlQuery
+    .update()
+    .into(table)
+    .set(fields)
+    .where(filter)
+    .build();
+
+  return client.query(query);
+};
