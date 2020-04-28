@@ -17,7 +17,6 @@ import { Observable } from 'rxjs/Observable';
 import { addBalance } from '../actions/clients';
 import config from '../config';
 import createApi from '../api';
-import { path } from 'ramda';
 
 const api = createApi(config.api.url);
 
@@ -25,8 +24,10 @@ export const getPaymentsEpic = (action$, store) => {
   return action$
     .ofType(PENDING_PAYMENTS_REQUEST)
     .filter(action => {
-      const payments = store.getState().payments.paymentsByClient;
-      return !payments || !payments[action.payload.id];
+      const payments = store
+        .getState()
+        .payments.getIn(['paymentsByClient', action.payload.id]);
+      return !payments;
     })
     .mergeMap(action => {
       return Observable.of(requestPayments()).concat(
@@ -36,17 +37,18 @@ export const getPaymentsEpic = (action$, store) => {
 };
 
 export const createPaymentEpic = (action$, store) => {
-  const id = () => path(['clients', 'selectedClient', '_id'], store.getState());
+  const id = () => store.getState().clients.getIn(['selectedClient', '_id']);
 
   return action$
     .ofType(CREATE_PAYMENT)
     .filter(() => !!id())
     .switchMap(action => {
       const payment = action.payload;
+      const clientId = id();
 
-      return api.post(`/clients/${id()}/payments`, payment).mergeMap(() => {
+      return api.post(`/clients/${clientId}/payments`, payment).mergeMap(() => {
         return Observable.of(
-          paymentAdded(id(), payment),
+          paymentAdded(clientId, payment),
           addBalance(payment.amount)
         );
       });

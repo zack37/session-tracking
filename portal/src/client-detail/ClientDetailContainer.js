@@ -21,8 +21,10 @@ ClientDetailContainer.propTypes = {
 };
 
 const mapStateToProps = state => {
+  const selectedClient = state.clients.get('selectedClient');
+
   return {
-    client: state.clients.selectedClient,
+    client: selectedClient && selectedClient.toJS(),
   };
 };
 

@@ -15,7 +15,6 @@ import {
 import { Observable } from 'rxjs/Observable';
 import config from '../config';
 import createApi from '../api';
-import { path } from 'ramda';
 import { subtractBalance } from '../actions/clients';
 
 const api = createApi(config.api.url);
@@ -24,8 +23,10 @@ export const getSessionsEpic = (action$, store) => {
   return action$
     .ofType(PENDING_SESSIONS_REQUEST)
     .filter(action => {
-      const sessions = store.getState().sessions.sessionsByClient;
-      return !sessions || !sessions[action.payload.id];
+      const sessions = store
+        .getState()
+        .sessions.getIn(['sessionsByClient', action.payload.id]);
+      return !sessions;
     })
     .mergeMap(action => {
       return Observable.of(requestSessions()).concat(
@@ -35,18 +36,20 @@ export const getSessionsEpic = (action$, store) => {
 };
 
 export const createSessionEpic = (action$, store) => {
-  const id = () => path(['clients', 'selectedClient', '_id'], store.getState());
+  const id = () => store.getState().clients.getIn(['selectedClient', '_id']);
 
-  return action$.ofType(CREATE_SESSION)
+  return action$
+    .ofType(CREATE_SESSION)
     .filter(() => !!id())
     .mergeMap(action => {
       const session = action.payload;
+      const clientId = id();
 
-      return api.post(`/clients/${id()}/sessions`, session).mergeMap(() => {
+      return api.post(`/clients/${clientId}/sessions`, session).mergeMap(() => {
         return Observable.of(
-          sessionAdded(id(), session),
+          sessionAdded(clientId, session),
           subtractBalance(session.amount)
         );
-      })
+      });
     });
 };

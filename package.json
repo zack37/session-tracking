@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server/build/server.js",
   "repository": "git@github.com:zack37/session-tracker.git",
-  "author": "Zack Smith <zachary.smith@vivintsolar.com>",
+  "author": "Zack Smith <zack.t.smith37@gmail.com>",
   "license": "MIT",
   "homepage": "https://zack37.github.io/session-tracker",
   "scripts": {

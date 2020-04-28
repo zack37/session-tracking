@@ -1,0 +1,73 @@
+scalar DateTime
+
+type Query {
+  trainers: [Trainer]
+  trainer(id: ID!): Trainer
+  trainerByEmail(email: String!): Trainer
+  clients(query: ClientsQueryInput): [Client]
+  client(id: ID!): Client
+}
+
+type Mutation {
+  createTrainer(trainer: TrainerInput!): Trainer
+  createClient(client: ClientInput!): Client
+  assignTrainer(trainerId: ID!, clientId: ID!): Trainer
+  logPayment(clientId: ID!, payment: PaymentInput!): Client
+  logSession(clientId: ID!, session: SessionInput!): Client
+}
+
+type Trainer {
+  id: ID!
+  name: String
+  email: String
+  clients: [Client]
+  createdat: DateTime
+  updatedat: DateTime
+}
+
+type Client {
+  id: ID!
+  name: String
+  email: String
+  trainer: Trainer
+  payments: [Payment]
+  sessions: [Session]
+  createdat: DateTime
+  updatedat: DateTime
+}
+
+type Payment {
+  id: ID!
+  date: DateTime
+  amount: Float
+}
+
+type Session {
+  id: ID!
+  date: DateTime
+  amount: Float
+}
+
+input TrainerInput {
+  name: String!
+  email: String!
+}
+
+input ClientsQueryInput {
+  trainerId: ID!
+}
+
+input ClientInput {
+  name: String!
+  email: String!
+}
+
+input PaymentInput {
+  date: DateTime!
+  amount: Float!
+}
+
+input SessionInput {
+  date: DateTime!
+  amount: Float!
+}

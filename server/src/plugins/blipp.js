@@ -1,8 +1,8 @@
 import blipp from 'blipp';
 
 export default {
-  register: blipp,
+  plugin: blipp,
   options: {
-    showAuth: true
-  }
+    showAuth: true,
+  },
 };

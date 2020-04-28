@@ -1,11 +1,15 @@
 {
-  "presets": [["env", { "targets": { "node": "6.10" } }], "stage-3"],
-  "plugins": ["add-module-exports", "console-groupify", "transform-console-log-variable-names"],
+  "presets": [["@babel/preset-env", { "targets": { "node": "8.10" } }]],
+  "plugins": [
+    "add-module-exports",
+    "console-groupify",
+    "transform-console-log-variable-names"
+  ],
   "sourceMaps": "both",
   "comments": false,
   "env": {
     "local": {
-       "plugins": []
+      "plugins": []
     },
     "production": {
       "presets": ["minify"]

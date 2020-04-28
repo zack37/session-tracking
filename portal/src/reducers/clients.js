@@ -10,66 +10,57 @@ import {
   SUBTRACT_BALANCE,
 } from '../actions/clients';
 
+import { Map, List } from 'immutable';
 import fuzzysearch from 'fuzzysearch';
+import reducerFactory from './reducer-factory';
 
-const defaultState = {
-  clients: [],
+const defaultState = Map({
+  clients: List(),
   filteredClients: null,
   isLoading: false,
   isAdding: false,
   selectedClient: null,
+});
+
+const searchClientName = (clients, searchTerm) => {
+  return clients.filter(x =>
+    fuzzysearch(searchTerm, x.get('name').toLowerCase())
+  );
 };
 
-function clients(state = defaultState, { type, payload }) {
-  switch (type) {
-    case ADD_CLIENT:
-      return { ...state, isAdding: true, selectedClient: null };
-    case CANCEL_ADD_CLIENT:
-      return { ...state, isAdding: false };
-    case CLIENT_ADDED:
-      return {
-        ...state,
-        isAdding: false,
-        clients: [...state.clients, payload],
-      };
-    case CLIENTS_REQUEST:
-      return { ...state, isLoading: true };
-    case CLIENTS_RESPONSE:
-      return {
-        ...state,
-        isLoading: false,
-        clients: payload,
-      };
-    case CLIENT_SELECTED:
-      return { ...state, isAdding: false, selectedClient: payload };
-    case ADD_BALANCE:
-      return {
-        ...state,
-        selectedClient: {
-          ...state.selectedClient,
-          balance: state.selectedClient.balance + payload.amount,
-        },
-      };
-    case SUBTRACT_BALANCE:
-      return {
-        ...state,
-        selectedClient: {
-          ...state.selectedClient,
-          balance: state.selectedClient.balance - payload.amount,
-        },
-      };
-    case SEARCH_CLIENTS:
-      return {
-        ...state,
-        filteredClients: payload.searchTerm
-          ? state.clients.filter(x =>
-              fuzzysearch(payload.searchTerm, x.name.toLowerCase())
-            )
-          : null,
-      };
-    default:
-      return state;
-  }
-}
+const clients = reducerFactory(defaultState, {
+  [ADD_CLIENT]: state => state.merge({ isAdding: true, selectedClient: null }),
+  [CANCEL_ADD_CLIENT]: state => state.set('isAdding', false),
+  [CLIENT_ADDED]: (state, { payload }) =>
+    state.merge({
+      isAdding: false,
+      clients: state.get('clients').concat(payload),
+    }),
+  [CLIENTS_REQUEST]: state => state.set('isLoading', true),
+  [CLIENTS_RESPONSE]: (state, { payload }) =>
+    state.merge({ isLoading: false, clients: List(payload) }),
+  [CLIENT_SELECTED]: (state, { payload }) =>
+    state.merge({ isAdding: false, selectedClient: Map(payload) }),
+  [ADD_BALANCE]: (state, { payload }) =>
+    state.updateIn(
+      ['selectedClient', 'balance'],
+      balance => balance + payload.amount
+    ),
+  [SUBTRACT_BALANCE]: (state, { payload }) =>
+    state.updateIn(
+      ['selectedClient', 'balance'],
+      balance => balance - payload.amount
+    ),
+  [SEARCH_CLIENTS]: (state, { payload }) =>
+    state.set(
+      'filteredClients',
+      payload.searchTerm
+        ? searchClientName(
+            state.get('clients'),
+            payload.searchTerm.toLowerCase()
+          )
+        : null
+    ),
+});
 
 export default clients;

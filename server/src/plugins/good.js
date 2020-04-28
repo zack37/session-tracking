@@ -1,7 +1,7 @@
 import good from 'good';
 
 export default {
-  register: good,
+  plugin: good,
   options: {
     ops: { interval: 10000 },
     reporters: {
@@ -11,7 +11,10 @@ export default {
           name: 'Squeeze',
           args: [{ log: '*', response: '*', error: '*' }],
         },
-        { module: 'good-console' },
+        {
+          module: 'good-console',
+          args: [{ format: 'YYYY-MM-DD/HH:mm:ss.SSS' }],
+        },
         'stdout',
       ],
     },
